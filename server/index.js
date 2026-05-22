@@ -315,22 +315,23 @@ app.get('/api/leaderboard', (req, res) => {
 });
 
 // Dashboard Stats Endpoint
+// Dashboard Stats Endpoint (Protegido contra nulos y bloqueos)
 app.get('/api/dashboard', (req, res) => {
     const db = readDB();
-    const users = db.users || [];
-    const classes = db.classes || [];
+    const users = db.users;
+    const classes = db.classes;
     const payments = users.flatMap(u => u.payments || []);
 
     // 1. Basic Counts
     const totalUsers = users.length;
     const activeMembers = users.filter(u => u.paymentStatus === 'Paid').length;
     
-    // 2. Revenue Calculation (Simple sum of all recorded payments)
+    // 2. Revenue Calculation
     const totalRevenue = payments.reduce((acc, curr) => acc + (curr.amount || 0), 0);
     
     // 3. Class Popularity
     const classStats = classes.map(c => ({
-        name: c.name,
+        name: c.name || 'Clase sin nombre',
         count: c.attendees ? c.attendees.length : 0
     })).sort((a, b) => b.count - a.count);
 
