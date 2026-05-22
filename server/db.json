@@ -1,0 +1,89 @@
+{
+  "users": [
+    {
+      "name": "usuario1",
+      "email": "usuario1@gmail.com",
+      "password": "usuario1",
+      "id": 1765897399134,
+      "role": "member",
+      "plan": null,
+      "paymentStatus": "Paid",
+      "attendance": 0,
+      "routine": "",
+      "notifications": [],
+      "payments": [],
+      "progress": [
+        {
+          "date": "17/12/2025",
+          "weight": 71
+        }
+      ]
+    }
+  ],
+  "classes": [
+    {
+      "id": 1,
+      "name": "CrossFit",
+      "time": "08:00 AM",
+      "trainer": "Profe",
+      "slots": 20,
+      "total": 20,
+      "intensity": "High",
+      "attendees": []
+    },
+    {
+      "id": 2,
+      "name": "Cardio",
+      "time": "09:30 AM",
+      "trainer": "Profe",
+      "slots": 20,
+      "total": 20,
+      "intensity": "High",
+      "attendees": []
+    },
+    {
+      "id": 3,
+      "name": "Circuito",
+      "time": "06:00 PM",
+      "trainer": "Profe",
+      "slots": 20,
+      "total": 20,
+      "intensity": "Medium",
+      "attendees": []
+    },
+    {
+      "id": 4,
+      "name": "Libre",
+      "time": "07:30 PM",
+      "trainer": "Profe",
+      "slots": 20,
+      "total": 20,
+      "intensity": "Medium",
+      "attendees": []
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Botella de Agua",
+      "price": 100,
+      "stock": 50,
+      "image": ""
+    },
+    {
+      "id": 2,
+      "name": "Proteína Whey (1kg)",
+      "price": 4500,
+      "stock": 10,
+      "image": ""
+    },
+    {
+      "id": 3,
+      "name": "Toalla TrainX",
+      "price": 1200,
+      "stock": 24,
+      "image": ""
+    }
+  ],
+  "lastResetDate": "22/5/2026"
+}
