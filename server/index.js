@@ -35,16 +35,30 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Helper to read DB
+// Helper to read DB (Estructura robusta por si faltan claves)
 const readDB = () => {
-    if (!fs.existsSync(DB_FILE)) return { users: [], classes: [] };
-    return JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+    if (!fs.existsSync(DB_FILE)) return { users: [], classes: [], products: [] };
+    try {
+        const data = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+        return {
+            users: data.users || [],
+            classes: data.classes || [],
+            products: data.products || [],
+            lastResetDate: data.lastResetDate || ""
+        };
+    } catch (e) {
+        return { users: [], classes: [], products: [] };
+    }
 };
 
-// Helper to write DB
+// Helper to write DB (Protegido para Vercel)
 const writeDB = (data) => {
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+    try {
+        fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+    } catch (error) {
+        console.log('Vercel Read-Only: No se pudo escribir en db.json de forma permanente.');
+    }
 };
-
 // --- ROUTES ---
 
 // Login
