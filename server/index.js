@@ -392,15 +392,25 @@ app.post('/api/store/buy', (req, res) => {
     res.json({ success: true, message: `Has comprado: ${product.name}` });
 });
 
-const server = app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+// --- LEVANTAR EL SERVIDOR (Adaptado para Vercel) ---
 
-server.on('error', (err) => {
-    console.error('Server Error:', err);
-});
+// Solo levanta el puerto de manera tradicional si NO estás en producción (entorno local)
+if (process.env.NODE_ENV !== 'production') {
+    const server = app.listen(PORT, () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+    });
 
-// Keep process alive just in case
-setInterval(() => {
-    // Heartbeat to prevent process exit if event loop is empty
-}, 10000);
+    server.on('error', (err) => {
+        console.error('Server Error:', err);
+    });
+}
+
+// MANTENER PROCESO ACTIVO (Solo en local, Vercel no lo necesita)
+if (process.env.NODE_ENV !== 'production') {
+    setInterval(() => {
+        // Heartbeat local
+    }, 10000);
+}
+
+// ESTO ES LO MÁS IMPORTANTE: Exportar la app para que Vercel la maneje
+export default app;
