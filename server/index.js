@@ -123,6 +123,8 @@ app.delete('/api/users/:id', (req, res) => {
 
 // --- Classes Routes ---
 
+// --- BLOCK DE RUTAS DE CLASES (Adaptado para Vercel Read-Only) ---
+
 app.get('/api/classes', (req, res) => {
     const db = readDB();
     const today = new Date().toLocaleDateString();
@@ -136,10 +138,15 @@ app.get('/api/classes', (req, res) => {
             slots: c.total,
             attendees: []
         }));
-        writeDB(db);
+        
+        try {
+            writeDB(db);
+        } catch (error) {
+            console.log('Vercel read-only: No se pudo persistir el reset diario, pero continuamos.');
+        }
     }
 
-    res.json(db.classes);
+    res.json(db.classes || []);
 });
 
 // Update Class (Capacity/Total)
@@ -156,7 +163,12 @@ app.put('/api/classes/:id', (req, res) => {
     db.classes[classIdx].total = parseInt(total);
     db.classes[classIdx].slots = parseInt(total) - currentAttendees;
 
-    writeDB(db);
+    try {
+        writeDB(db);
+    } catch (error) {
+        console.log('Vercel read-only: No se pudo guardar la modificacion de la clase.');
+    }
+    
     res.json({ success: true, class: db.classes[classIdx] });
 });
 
@@ -176,7 +188,12 @@ app.delete('/api/classes/:classId/attendees/:userId', (req, res) => {
         db.classes[classIdx].slots += 1;
     }
 
-    writeDB(db);
+    try {
+        writeDB(db);
+    } catch (error) {
+        console.log('Vercel read-only: No se pudo guardar la eliminacion del alumno.');
+    }
+
     res.json({ success: true, class: db.classes[classIdx] });
 });
 
@@ -202,7 +219,12 @@ app.post('/api/classes/book', (req, res) => {
     if (!db.classes[classIdx].attendees) db.classes[classIdx].attendees = [];
     db.classes[classIdx].attendees.push(user); // Saving full user object for easier display in Admin
     
-    writeDB(db);
+    try {
+        writeDB(db);
+    } catch (error) {
+        console.log('Vercel read-only: No se pudo guardar la reserva en el archivo.');
+    }
+
     res.json({ success: true, class: db.classes[classIdx] });
 });
 
